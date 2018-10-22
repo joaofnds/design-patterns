@@ -1,3 +1,17 @@
+/**
+ * What is the Factory Pattern?
+ *
+ * - When a method return one of several possible classes that
+ *   share a common super class
+ * Ex:
+ *   - Create a new enemy in a game
+ *   - Random number generator picks a number assigned to a specific enemy
+ *   - The factory returns the enemy associated with that number
+ * - The class is chosen at run time
+ *
+ * @see http://www.newthinktank.com/2012/09/factory-design-pattern-tutorial/
+ */
+
 abstract class EnemyShip {
   private name: string;
   private amtDamage: number;

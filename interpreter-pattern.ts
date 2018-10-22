@@ -7,7 +7,10 @@
  *   needed to perform the different conversions
  * - The Terminal or Concrete Expressions provide specific conversions on
  *   different types of data
+ *
+ * @see http://www.newthinktank.com/2012/10/interpreter-design-pattern-tutorial/
  */
+
 class ConversionContext {
   private conversionQuestion: string = "";
   private conversionResponse: string = "";
@@ -27,7 +30,7 @@ class ConversionContext {
     this.quantity = Number(this.partsOfQuestion[0]);
     this.conversionResponse = `${this.partsOfQuestion[0]} ${
       this.partsOfQuestion[1]
-    } equals `;
+      } equals `;
   }
 
   public getInput(): string {

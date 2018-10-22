@@ -1,3 +1,19 @@
+/**
+ * What is the Facade Pattern?
+ *
+ * - When you create a simplified interface that performs many
+ *   other actions behind the scenes
+ *
+ * Ex:
+ *   - Can I withdrawal $50 from the bank?
+ *     - Check if the checking account is valid
+ *     - Chceck if security code is valid
+ *     - Chceck if fund are available
+ *     - Make changes accordingly
+ *
+ * @see http://www.newthinktank.com/2012/09/facade-design-pattern-tutorial/
+ */
+
 class WelcomeToBank {
   public constructor() {
     console.log("Welcome to ABC Bank");

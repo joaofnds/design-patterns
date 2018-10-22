@@ -6,6 +6,8 @@
  *    - Create 4 objects that can either add, subtract, multiply, or divide
  *    - Send 2 numbers and a command and allow these 4 object to decide
  *      which can handle the requested calculation
+ *
+ * @see http://www.newthinktank.com/2012/10/chain-of-responsibility-design-pattern-tutorial/
  */
 
 interface Chain {
@@ -52,7 +54,7 @@ class AddNumbers implements Chain {
     if (request.getCalcWanted() == "add") {
       console.log(
         `${request.getNumber1()} + ${request.getNumber2()} = ${request.getNumber1() +
-          request.getNumber2()}`
+        request.getNumber2()}`
       );
     } else {
       this.nextInChain.calculate(request);
@@ -70,7 +72,7 @@ class SubtractNumbers implements Chain {
     if (request.getCalcWanted() == "subtract") {
       console.log(
         `${request.getNumber1()} - ${request.getNumber2()} = ${request.getNumber1() -
-          request.getNumber2()}`
+        request.getNumber2()}`
       );
     } else {
       this.nextInChain.calculate(request);
@@ -88,7 +90,7 @@ class MultiplyNumbers implements Chain {
     if (request.getCalcWanted() == "multiply") {
       console.log(
         `${request.getNumber1()} * ${request.getNumber2()} = ${request.getNumber1() *
-          request.getNumber2()}`
+        request.getNumber2()}`
       );
     } else {
       this.nextInChain.calculate(request);
@@ -106,7 +108,7 @@ class DivideNumbers implements Chain {
     if (request.getCalcWanted() == "divide") {
       console.log(
         `${request.getNumber1()} / ${request.getNumber2()} = ${request.getNumber1() /
-          request.getNumber2()}`
+        request.getNumber2()}`
       );
     } else {
       this.nextInChain.calculate(request);

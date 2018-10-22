@@ -1,3 +1,16 @@
+/**
+ * What is the Decorator Pattern?
+ *
+ * - The Decorator allows you to modify an object dynamically
+ * - You would use it when you want the capabilities of inheritance with
+ *   subclasses, but you need to add functionality at run time
+ * - It is more flexible than inheritance
+ * - Simplifies code because you add functionality using many simple classes
+ * - Rather then rewrite old code, you can extend with new code
+ *
+ * @see http://www.newthinktank.com/2012/09/decorator-design-pattern-tutorial/
+ */
+
 interface Pizza {
   getDescription(): string;
   getCost(): number;

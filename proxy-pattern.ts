@@ -1,3 +1,13 @@
+/**
+ * What is the Proxy Design Pattern?
+ *
+ * - Provide a class which will limit access to another class
+ * - You may do this for security reasons, because an Object is
+ *   intensive to create, or is accessed from a remote location
+ *
+ * @see http://www.newthinktank.com/2012/10/proxy-design-pattern-tutorial/
+ */
+
 // Code from previous tutorial (state pattern)
 interface ATMState {
   insertCard(): void;

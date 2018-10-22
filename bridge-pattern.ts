@@ -1,3 +1,16 @@
+/**
+ * What is the Bridge Pattern?
+ *
+ * - Decouple an abstraction from its implementation so that the
+ *   two can vary independently
+ * - The bridge pattern is very poorly explained, everyone seems
+ *   to explain it differenlty
+ * - Progessively adding functionality while separating out major
+ *   differences using abstract class
+ *
+ * @see http://www.newthinktank.com/2012/10/bridge-design-pattern-tutorial/
+ */
+
 abstract class EntertainmentDevice {
   protected deviceState: number;
   protected maxSetting: number;

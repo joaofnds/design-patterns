@@ -1,3 +1,17 @@
+/**
+ * What is the Builder Pattern?
+ *
+ * - Pattern used to create objects made from a bunch of other objects
+ *   - When you want to build an object made up from other objects
+ *   - When you want the creation of these parts to be independent
+ *     of the main object
+ *   - Hide the creation of the parts from the client so both
+ *     aren't dependent
+ *   - The builder know the specifics and nobody else does
+ *
+ * @see http://www.newthinktank.com/2012/09/builder-design-pattern-tutorial/
+ */
+
 interface RobotPlan {
   setRobotHead(head: string): void;
   setRobotTorso(torso: string): void;

@@ -1,7 +1,16 @@
-// Memento Design Pattern
-// Used to store an object state at a point in time
-// so it can be returned to that state later. It
-// simply allows you to undo/redo changes on an Object
+/**
+ * What is the Memento Design Pattern?
+ * - Used to store an object state at a point in time so it can be
+ *   returned to that state later.
+ * - It simply allows you to undo/redo changes on an Object
+ * - Memento: The basic object that is stored in different states
+ * - Originator: Sets and Gets values from the currently targeted
+ *   Memento. Create new Mementos and assigns current values to them
+ * - Caretaker: Holds a List that contains all previous versions of the Memento.
+ *   It can store and retrieve stored Mementos
+ *
+ * @see http://www.newthinktank.com/2012/10/memento-design-pattern-tutorial/
+ */
 
 class Memento {
   private article: string;

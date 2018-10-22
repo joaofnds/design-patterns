@@ -1,8 +1,13 @@
-/*
- * Allows you to treat individual objects and compositions of objects uniformly
- * They allow you to represent part-whole hierarchies
- * Components can be further divided into smaller components
- * You can structure data or represent the inner working of every part of a whole object individually
+/**
+ * What is the Composite Design Pattern?
+ * - Allows you to treat individual objects and
+ *   compositions of objects uniformly
+ * - They allow you to represent part-whole hierarchies
+ * - Components can be further divided into smaller components
+ * - You can structure data or represent the inner working of
+ *   every part of a whole object individually
+ *
+ * @see http://www.newthinktank.com/2012/10/composite-design-pattern-tutorial/
  */
 abstract class SongComponent {
   public add(newSongComponent: SongComponent) {

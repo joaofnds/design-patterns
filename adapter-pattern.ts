@@ -1,3 +1,16 @@
+/**
+ * What is the Adapter Pattern?
+ *
+ * - Allows two incomplatible interfaces to work togheter
+ * - Used when the client expects a (target) interface
+ * - The adapter class allows the use of the available interface and
+ *   the Target interface
+ * - Any class can work togheter as long as the Adapter solves the
+ *   issue that all classes must implement every method by the shared interface
+ *
+ * @see http://www.newthinktank.com/2012/09/adapter-design-pattern-tutorial/
+ */
+
 const rand = n => Math.round(Math.random() * n);
 
 interface EnemyAttacker {

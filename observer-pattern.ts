@@ -1,3 +1,17 @@
+/**
+ * When to use the Observer Pattern
+ *
+ * - when you need many other object to receive an update when
+ *   another object changes
+ * Ex:
+ *   - Stock market with thousands of stocks need to send updates to
+ *     objects representing individual stocks
+ *   - The Subject(publisher) sends many stocks to the observers
+ *   - The Observers(subscribers) takes the ones they want and use them
+ *
+ * @see http://www.newthinktank.com/2012/08/observer-design-pattern-tutorial/
+ */
+
 interface Subject {
   register(o: Observer): void;
   unregister(o: Observer): void;

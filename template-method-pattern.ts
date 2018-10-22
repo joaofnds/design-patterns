@@ -1,9 +1,17 @@
-/*
- * Used to create a group of subclasses that have to execute a similar group of method
- * You create an abstract class that contains a method called the Template Method
- * The Template Method contains a series of method calls that every subclass object will call
- * The subclass object can override some of the method calls
+/**
+ * What is the Template Method Design Pattern?
+ *
+ * - Used to create a group of subclasses that have to execute
+ *   a similar group of method
+ * - You create an abstract class that contains a method called
+ *   the Template Method
+ * - The Template Method contains a series of method calls that
+ *   every subclass object will call
+ * - The subclass object can override some of the method calls
+ *
+ * @see http://www.newthinktank.com/2012/10/template-method-design-pattern-tutorial/
  */
+
 abstract class Hoagie {
   makeSandwich(): void {
     this.cutBun();
@@ -94,8 +102,8 @@ class VeggieHoagie extends Hoagie {
     return false;
   }
 
-  addMeat(): void {}
-  addCheese(): void {}
+  addMeat(): void { }
+  addCheese(): void { }
   addVegetables(): void {
     console.log("Adding the veggies:", ...this.veggiesUsed);
   }

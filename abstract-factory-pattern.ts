@@ -1,12 +1,24 @@
-// http://www.newthinktank.com/2012/09/abstract-factory-design-pattern/
-class ESWeapon {}
-class ESEngine {}
+/**
+ * What is the Abstract Factory Pattern?
+ *
+ * - It is like a factory, but everything is encapsulated
+ *   - The method that orders the subject
+ *   - The factories that build the object
+ *   - The final objects
+ *   - The final objects contain objects that use Strategy Pattern
+ *     - Composition: Object class fields are objects
+ *
+ * @see http://www.newthinktank.com/2012/09/abstract-factory-design-pattern/
+ */
 
-class ESUFOGun extends ESWeapon {}
-class ESUFOEngine extends ESEngine {}
+class ESWeapon { }
+class ESEngine { }
 
-class ESUFOBossGun extends ESWeapon {}
-class ESUFOBossEngine extends ESEngine {}
+class ESUFOGun extends ESWeapon { }
+class ESUFOEngine extends ESEngine { }
+
+class ESUFOBossGun extends ESWeapon { }
+class ESUFOBossEngine extends ESEngine { }
 
 abstract class EnemyShip {
   private name: string;
