@@ -1,5 +1,14 @@
-// http://www.newthinktank.com/2012/11/visitor-design-pattern-tutorial/
-// https://www.youtube.com/watch?v=pL4mOUDi54o
+/**
+ * What is the visitor design pattern?
+ *
+ * - Allows you to add methods to classes of different types without much
+ *   altering to those classes
+ * - You can make completely different methods depending on the class used
+ * - Allows you to define external classes that extend other classes without
+ *   majorly editing them
+ *
+ * @see http://www.newthinktank.com/2012/11/visitor-design-pattern-tutorial/
+ */
 
 interface Visitor {
   visitLiquor(liquorItem: Liquor): number;
