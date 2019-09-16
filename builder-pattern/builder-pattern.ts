@@ -80,10 +80,10 @@ class OldRobotBuilder implements RobotBuilder {
     this.robot.setRobotTorso("Tin Torso");
   }
   public buildRobotArms(): void {
-    this.robot.setRobotArms("Tin Arms");
+    this.robot.setRobotArms("Blowtorch Arms");
   }
   public buildRobotLegs(): void {
-    this.robot.setRobotLegs("Tin Head");
+    this.robot.setRobotLegs("Roller Skates");
   }
 }
 
