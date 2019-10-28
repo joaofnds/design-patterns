@@ -128,7 +128,7 @@ class UFOBossEnemyShip < EnemyShip
   end
 
   def make_ship
-    puts 'Making enemy ship ' + name
+    puts "Making enemy ship #{name}"
 
     self.weapon = ship_factory.add_es_gun
     self.engine = ship_factory.add_es_engine
