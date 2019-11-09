@@ -10,8 +10,8 @@
 
 ;; because class slots are only accessible through an instance, we need to instantiate
 ;; it first, so we can get hold of that slot
-(defun singleton-instance (class-name)
-  (let ((obj (make-instance class-name)))
+(defmethod make-instance ((class (eql 'singleton)) &key)
+  (let ((obj (call-next-method)))
     (with-slots (instance) obj
       (unless instance
         (setf instance obj))
@@ -19,5 +19,5 @@
 
 ;;;; ---------------------------------------------------------------------------
 
-(print (singleton-instance 'singleton))
-(print (singleton-instance 'singleton))
+(print (make-instance 'singleton))
+(print (make-instance 'singleton))
