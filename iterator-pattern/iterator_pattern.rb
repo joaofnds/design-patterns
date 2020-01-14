@@ -115,7 +115,7 @@ class DiskJockey
   def show_decade_songs(enumerable_songs)
     enumerable_songs.each do |song|
       puts "Name:         #{song.name}"
-      puts "Bank:         #{song.band}"
+      puts "Band:         #{song.band}"
       puts "Release year: #{song.release_year}"
     end
   end
