@@ -32,6 +32,10 @@ class SongComponent
   def release_year
     raise NotImplementedError
   end
+
+  def info
+    raise NotImplementedError
+  end
 end
 
 class SongGroup < SongComponent

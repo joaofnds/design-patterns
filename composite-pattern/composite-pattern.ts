@@ -75,7 +75,7 @@ class SongGroup extends SongComponent {
   }
 
   public displaySongInfo(): void {
-    console.log(this.getGroupDescription(), this.getGroupDescription());
+    console.log(this.getGroupName(), this.getGroupDescription());
     for (const song of this.songComponents) {
       (song as Song).displaySongInfo();
     }
