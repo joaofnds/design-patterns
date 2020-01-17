@@ -66,7 +66,6 @@
           :collect song)))
 
 (defmethod add-song :after ((playlist songs-of-the-90s) name band release-year)
-  (declare (ignore name band release-year))
   (incf (hash-key playlist)))
 
 
