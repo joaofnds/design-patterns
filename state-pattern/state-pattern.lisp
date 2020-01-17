@@ -54,7 +54,6 @@
   (insert-card (state atm)))
 
 (defmethod insert-card ((state has-card))
-  (declare (ignore state))
   (format t "you can't insert more than one card~%"))
 
 (defmethod insert-card ((state no-card))
@@ -63,11 +62,9 @@
     (setf (state atm) (has-card atm))))
 
 (defmethod insert-card ((state has-pin))
-  (declare (ignore state))
   (format t "you can't insert more than one card~%"))
 
 (defmethod insert-card ((state no-cash))
-  (declare (ignore state))
   (format t "ATM out of cash~%"))
 
 
@@ -81,7 +78,6 @@
     (setf (state atm) (no-card atm))))
 
 (defmethod eject-card ((state no-card))
-  (declare (ignore state))
   (format t "enter a card first~%"))
 
 (defmethod eject-card ((state has-pin))
@@ -90,7 +86,6 @@
     (setf (state atm) (no-card atm))))
 
 (defmethod eject-card ((state no-cash))
-  (declare (ignore state))
   (format t "no card inserted~%"))
 
 ;; insert pin
@@ -110,15 +105,12 @@
           (eject-card atm)))))
 
 (defmethod insert-pin ((state no-card) pin)
-  (declare (ignore state))
   (format t "insert a card first"))
 
 (defmethod insert-pin ((state has-pin) pin)
-  (declare (ignore state))
   (format t "already entered PIN"))
 
 (defmethod insert-pin ((state no-cash) pin)
-  (declare (ignore state))
   (format t "ATM out of cash"))
 
 
@@ -127,11 +119,9 @@
   (request-cash (state atm) amount))
 
 (defmethod request-cash ((state has-card) amount)
-  (declare (ignore state amount))
   (format t "enter a PIN first"))
 
 (defmethod request-cash ((state no-card) amount)
-  (declare (ignore state amount))
   (format t "enter a card first"))
 
 (defmethod request-cash ((state has-pin) amount)
@@ -151,7 +141,6 @@
          (setf (state atm) (out-of-cash atm)))))))
 
 (defmethod request-cash ((state no-cash) amount)
-  (declare (ignore state amount))
   (format t "ATM out of cash"))
 
 ;;;; ---------------------------------------------------------------------------
