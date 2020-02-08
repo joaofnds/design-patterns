@@ -44,7 +44,7 @@
 (defmethod info ((obj song))
   (with-output-to-string (info)
     (with-slots (name band release-year) obj
-        (format info "~a was recorded by ~a in ~a" name band release-year))))
+      (format info "~a was recorded by ~a in ~a" name band release-year))))
 
 ;;;; ---------------------------------------------------------------------------
 
