@@ -10,20 +10,13 @@ end
 describe Specification, :satisfied_by? do
   subject { PersonMinAgeSpec.new(21) }
 
-  let(:person_with_20yo) { Person.new('a', 20) }
-  let(:person_with_21yo) { Person.new('b', 21) }
-  let(:person_with_22yo) { Person.new('c', 22) }
-
-  it { is_expected.to_not be_satisfied_by(person_with_20yo) }
-  it { is_expected.to be_satisfied_by(person_with_21yo) }
-  it { is_expected.to be_satisfied_by(person_with_22yo) }
+  it { is_expected.to_not be_satisfied_by Person.new('a', 20) }
+  it { is_expected.to be_satisfied_by Person.new('b', 21)  }
+  it { is_expected.to be_satisfied_by Person.new('c', 22)  }
 end
 
 describe Specification, :and do
-  let(:name_joao) { PersonNameSpec.new('joao') }
-  let(:min_21yo) { PersonMinAgeSpec.new(21) }
-
-  subject { name_joao.and min_21yo }
+  subject { PersonNameSpec.new('joao').and PersonMinAgeSpec.new(21) }
 
   it { is_expected.to_not be_satisfied_by Person.new('bob', 20) }
   it { is_expected.to_not be_satisfied_by Person.new('bob', 21)  }
@@ -32,10 +25,7 @@ describe Specification, :and do
 end
 
 describe Specification, :and do
-  let(:name_joao) { PersonNameSpec.new('joao') }
-  let(:min_21yo) { PersonMinAgeSpec.new(21) }
-
-  subject { name_joao.or min_21yo }
+  subject { PersonNameSpec.new('joao').or PersonMinAgeSpec.new(21) }
 
   it { is_expected.to_not be_satisfied_by Person.new('bob', 20) }
   it { is_expected.to be_satisfied_by Person.new('bob', 21)  }
