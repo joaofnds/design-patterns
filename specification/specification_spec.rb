@@ -40,6 +40,21 @@ describe Specification, :not do
   it { is_expected.to_not be_satisfied_by Person.new('joao', 21) }
 end
 
+describe Specification, 'chaining' do
+  subject do
+    min_21yo = PersonMinAgeSpec.new(21)
+    name_joao = PersonNameSpec.new('joao')
+    name_bob = PersonNameSpec.new('bob')
+
+    name_joao.and(min_21yo).or(name_bob)
+  end
+
+  it { is_expected.to_not be_satisfied_by Person.new('joao', 20) }
+  it { is_expected.to_not be_satisfied_by Person.new('alice', 21) }
+  it { is_expected.to be_satisfied_by Person.new('joao', 21) }
+  it { is_expected.to be_satisfied_by Person.new('bob', 20) }
+end
+
 class PersonMinAgeSpec < Specification
   def satisfied_by?(person)
     person.age >= age
