@@ -11,7 +11,7 @@
  * @see http://www.newthinktank.com/2012/09/adapter-design-pattern-tutorial/
  */
 
-const rand = n => Math.round(Math.random() * n);
+const rand = (n: number) => Math.round(Math.random() * n);
 
 interface EnemyAttacker {
   fireWeapon(): void;
@@ -21,36 +21,41 @@ interface EnemyAttacker {
 
 // Target
 class EnemyTank implements EnemyAttacker {
-  public fireWeapon(): void {
+  public fireWeapon() {
     const attackDamage: number = rand(10);
     console.log(`Enemy Tank Does ${attackDamage} damage`);
   }
-  public driveForward(): void {
+
+  public driveForward() {
     const movement: number = rand(5);
     console.log(`Enemy tank moves ${movement} spaces`);
   }
-  public assignDriver(driverName: string): void {
+
+  public assignDriver(driverName: string) {
     console.log(`${driverName} is driving the tank`);
   }
 }
 
 // Adaptee
 class EnemyRobot {
-  public smashWithHands(): void {
+  public smashWithHands() {
     const attackDamage: number = rand(10);
     console.log(`Enemy robot causes ${attackDamage} damage with its hands`);
   }
-  public walkForward(): void {
+
+  public walkForward() {
     const movement = rand(5);
     console.log(`Enemy Robot Walks Forward ${movement} spaces`);
   }
-  public reactToHuman(humanName: string): void {
+
+  public reactToHuman(humanName: string) {
     console.log(`Enemy Robot Tramps on ${humanName}`);
   }
 }
 
 class EnemyRobotAdapter implements EnemyAttacker {
   private enemyRobot: EnemyRobot;
+
   public constructor(enemyRobot: EnemyRobot) {
     this.enemyRobot = enemyRobot;
   }
