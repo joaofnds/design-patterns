@@ -11,48 +11,49 @@
  * @see http://www.newthinktank.com/2012/09/abstract-factory-design-pattern/
  */
 
-class ESWeapon { }
-class ESEngine { }
+class ESWeapon {}
+class ESEngine {}
 
-class ESUFOGun extends ESWeapon { }
-class ESUFOEngine extends ESEngine { }
+class ESUFOGun extends ESWeapon {}
+class ESUFOEngine extends ESEngine {}
 
-class ESUFOBossGun extends ESWeapon { }
-class ESUFOBossEngine extends ESEngine { }
+class ESUFOBossGun extends ESWeapon {}
+class ESUFOBossEngine extends ESEngine {}
 
 abstract class EnemyShip {
-  private name: string;
+  #name: string;
 
   // Newly defined objects that represent weapon & engine
-  // These can be changed easily by assigning new parts
-  // in UFOEnemyShipFactory or UFOBossEnemyShipFactory
+  // These can be changed easily by assigning new parts in UFOEnemyShipFactory
+  // or UFOBossEnemyShipFactory
   weapon: ESWeapon;
   engine: ESEngine;
 
-  public getName(): string {
-    return this.name;
+  get name(): string {
+    return this.#name;
   }
-  public setName(name: string) {
-    this.name = name;
+
+  set name(newName: string) {
+    this.#name = newName;
   }
 
   abstract makeShip(): void;
 
   public followHeroShip(): void {
-    console.log(this.getName(), "is following the hero at", this.engine);
+    console.log(this.name, "is following the hero at", this.engine);
   }
 
   public displayEnemyShip(): void {
-    console.log(this.getName(), "is on the screen");
+    console.log(this.name, "is on the screen");
   }
 
   public enemyShipShoots(): void {
-    console.log(this.getName, "attacks and does", this.weapon);
+    console.log(this.name, "attacks and does", this.weapon);
   }
 }
 
 class UFOEnemyShip extends EnemyShip {
-  shipFactory: EnemyShipFactory;
+  private readonly shipFactory: EnemyShipFactory;
 
   constructor(shipFactory: EnemyShipFactory) {
     super();
@@ -60,14 +61,14 @@ class UFOEnemyShip extends EnemyShip {
   }
 
   makeShip(): void {
-    console.log("making the ship", this.getName());
+    console.log("making the ship", this.name);
     this.weapon = this.shipFactory.addESGun();
     this.engine = this.shipFactory.addESEngine();
   }
 }
 
 class UFOBossEnemyShip extends EnemyShip {
-  shipFactory: EnemyShipFactory;
+  private readonly shipFactory: EnemyShipFactory;
 
   constructor(shipFactory: EnemyShipFactory) {
     super();
@@ -75,17 +76,15 @@ class UFOBossEnemyShip extends EnemyShip {
   }
 
   makeShip(): void {
-    console.log("making the ship", this.getName());
+    console.log("making the ship", this.name);
     this.weapon = this.shipFactory.addESGun();
     this.engine = this.shipFactory.addESEngine();
   }
 }
 
-// With an Abstract Factory Pattern you won't
-// just build ships, but also all of the components
-// for the ships
-// Here is where you define the parts that are required
-// if an object wants to be an enemy ship
+// With an Abstract Factory Pattern you won't just build ships, but also all of
+// the components for the ships Here is where you define the parts that are
+// required if an object wants to be an enemy ship
 interface EnemyShipFactory {
   addESGun(): ESWeapon;
   addESEngine(): ESEngine;
@@ -112,18 +111,16 @@ class UFOBossEnemyShipFactory implements EnemyShipFactory {
 }
 
 abstract class EnemyShipBuilding {
-  // This acts as an ordering mechanism for creating
-  // EnemyShips that have a weapon, engine & name
-  // & nothing else
+  // This acts as an ordering mechanism for creating EnemyShips that have a weapon, engine & name &
+  // nothing else
 
-  // The specific parts used for engine & weapon depend
-  // upon the String that is passed to this method
+  // The specific parts used for engine & weapon depend upon the String that is passed to this
+  // method
 
   protected abstract makeEnemyShip(typeOfShip: string): EnemyShip;
 
-  // When called a new EnemyShip is made. The specific parts
-  // are based on the String entered. After the ship is made
-  // we execute multiple methods in the EnemyShip Object
+  // When called a new EnemyShip is made. The specific parts are based on the String entered. After
+  // the ship is made we execute multiple methods in the EnemyShip Object
   public orderTheShip(typeOfShip: string): EnemyShip {
     const theEnemyShip: EnemyShip = this.makeEnemyShip(typeOfShip);
 
@@ -140,21 +137,18 @@ class UFOEnemyShipBuilding extends EnemyShipBuilding {
   protected makeEnemyShip(typeOfShip: string): EnemyShip {
     let theEnemyShip: EnemyShip = null;
 
-    // If UFO was sent grab use the factory that knows
-    // what types of weapons and engines a regular UFO
-    // needs. The EnemyShip object is returned & given a name
+    // If UFO was sent grab use the factory that knows what types of weapons and engines a regular
+    // UFO needs. The EnemyShip object is returned & given a name
     if (typeOfShip === "UFO") {
       const shipPartsFactory: EnemyShipFactory = new UFOEnemyShipFactory();
       theEnemyShip = new UFOEnemyShip(shipPartsFactory);
-      theEnemyShip.setName("UFO Grunt Ship");
+      theEnemyShip.name = "UFO Grunt Ship";
     } else if (typeOfShip === "UFO BOSS") {
-      // If UFO BOSS was sent grab use the factory that knows
-      // what types of weapons and engines a Boss UFO
-      // needs. The EnemyShip object is returned & given a name
-
+      // If UFO BOSS was sent grab use the factory that knows what types of weapons and engines a
+      // Boss UFO needs. The EnemyShip object is returned & given a name
       const shipPartsFactory: EnemyShipFactory = new UFOBossEnemyShipFactory();
       theEnemyShip = new UFOEnemyShip(shipPartsFactory);
-      theEnemyShip.setName("UFO Boss Ship");
+      theEnemyShip.name = "UFO Boss Ship";
     }
 
     return theEnemyShip;
