@@ -12,90 +12,77 @@
  */
 
 abstract class EntertainmentDevice {
-  protected deviceState: number;
-  protected maxSetting: number;
-  protected volumeLevel: number = 0;
+  protected volume: number = 0;
 
-  public abstract buttonFivePressed(): void;
-  public abstract buttonSixPressed(): void;
+  constructor(protected setting: number, protected maxSetting: number) {}
 
-  public deviceFeedback(): void {
-    if (this.deviceState > this.maxSetting || this.deviceState < 0) {
-      this.deviceState = 0;
-      console.log(`On: ${this.deviceFeedback}`);
+  abstract pressButtonFive(): void;
+  abstract pressButtonSix(): void;
+
+  feedback() {
+    if (this.setting > this.maxSetting || this.setting < 0) {
+      this.setting = 0;
+      console.log(`On: ${this.setting}`);
     }
   }
 
-  public buttonSevenPressed(): void {
-    this.volumeLevel++;
-    console.log(`Volume at: ${this.volumeLevel}`);
+  pressButtonSeven() {
+    this.volume++;
+    console.log(`Volume at: ${this.volume}`);
   }
 
-  public buttonEightPressed(): void {
-    this.volumeLevel--;
-    console.log(`Volume at: ${this.volumeLevel}`);
+  pressButtonEight() {
+    this.volume--;
+    console.log(`Volume at: ${this.volume}`);
   }
 }
 
 class TVDevice extends EntertainmentDevice {
-  public constructor(newDeviceState: number, newMaxSetting: number) {
-    super();
-    this.deviceState = newDeviceState;
-    this.maxSetting = newMaxSetting;
-  }
-  public buttonFivePressed(): void {
+  pressButtonFive() {
     console.log("Channel Down");
-    this.deviceState--;
+    this.setting--;
   }
-  public buttonSixPressed(): void {
+
+  pressButtonSix() {
     console.log("Channel Up");
-    this.deviceState++;
+    this.setting++;
   }
 }
 
 abstract class RemoteButton {
-  private theDevice: EntertainmentDevice;
+  constructor(private device: EntertainmentDevice) {}
 
-  public constructor(newDevice: EntertainmentDevice) {
-    this.theDevice = newDevice;
+  pressButtonFive() {
+    this.device.pressButtonFive();
   }
 
-  public buttonFivePressed(): void {
-    this.theDevice.buttonFivePressed();
+  pressButtonSix() {
+    this.device.pressButtonSix();
   }
 
-  public buttonSixPressed(): void {
-    this.theDevice.buttonSixPressed();
-  }
-
-  public abstract buttonNinePressed();
+  abstract pressButtonNine(): void;
 }
 
-class TVRemoveMute extends RemoteButton {
-  public constructor(newDevice: EntertainmentDevice) {
-    super(newDevice);
-  }
-
-  public buttonNinePressed() {
-    console.log("TV Muted");
+class TVRemoteMute extends RemoteButton {
+  pressButtonNine() {
+    console.log("TV muted");
   }
 }
 
-class TVRemovePause extends RemoteButton {
-  public constructor(newDevice: EntertainmentDevice) {
-    super(newDevice);
-  }
-
-  public buttonNinePressed() {
+class TVRemotePause extends RemoteButton {
+  pressButtonNine() {
     console.log("TV paused");
   }
 }
 
 //----------------------------------------------------------------------
-const theTV: RemoteButton = new TVRemoveMute(new TVDevice(1, 200));
-const theTV2: RemoteButton = new TVRemovePause(new TVDevice(1, 200));
-theTV.buttonFivePressed();
-theTV.buttonSixPressed();
-theTV.buttonNinePressed();
 
-theTV2.buttonNinePressed();
+const device = new TVDevice(1, 200)
+const TV: RemoteButton = new TVRemoteMute(device);
+const TV2: RemoteButton = new TVRemotePause(device);
+
+TV.pressButtonFive();
+TV.pressButtonSix();
+TV.pressButtonNine();
+
+TV2.pressButtonNine();
