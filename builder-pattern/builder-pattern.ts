@@ -13,53 +13,25 @@
  */
 
 interface RobotPlan {
-  setRobotHead(head: string): void;
-  setRobotTorso(torso: string): void;
-  setRobotArms(arms: string): void;
-  setRobotLegs(legs: string): void;
-}
-
-class Robot implements RobotPlan {
-  private robotHead: string;
-  private robotTorso: string;
-  private robotArms: string;
-  private robotLegs: string;
-
-  public getRobotHead(): string {
-    return this.robotHead;
-  }
-  public setRobotHead(head: string): void {
-    this.robotHead = head;
-  }
-
-  public getRobotTorso(): string {
-    return this.robotTorso;
-  }
-  public setRobotTorso(torso: string): void {
-    this.robotTorso = torso;
-  }
-
-  public getRobotArms(): string {
-    return this.robotArms;
-  }
-  public setRobotArms(arms: string): void {
-    this.robotArms = arms;
-  }
-
-  public getRobotLegs(): string {
-    return this.robotLegs;
-  }
-  public setRobotLegs(legs: string): void {
-    this.robotLegs = legs;
-  }
+  head: string;
+  torso: string;
+  arms: string;
+  legs: string;
 }
 
 interface RobotBuilder {
-  buildRobotHead(): void;
-  buildRobotTorso(): void;
-  buildRobotArms(): void;
-  buildRobotLegs(): void;
+  buildHead(): void;
+  buildTorso(): void;
+  buildArms(): void;
+  buildLegs(): void;
   getRobot(): Robot;
+}
+
+class Robot implements RobotPlan {
+  head: string = "";
+  torso: string = "";
+  arms: string = "";
+  legs: string = "";
 }
 
 class OldRobotBuilder implements RobotBuilder {
@@ -73,47 +45,47 @@ class OldRobotBuilder implements RobotBuilder {
     return this.robot;
   }
 
-  public buildRobotHead(): void {
-    this.robot.setRobotHead("Tin Head");
+  public buildHead(): void {
+    this.robot.head = "Tin Head";
   }
-  public buildRobotTorso(): void {
-    this.robot.setRobotTorso("Tin Torso");
+
+  public buildTorso(): void {
+    this.robot.torso = "Tin Torso";
   }
-  public buildRobotArms(): void {
-    this.robot.setRobotArms("Blowtorch Arms");
+
+  public buildArms(): void {
+    this.robot.arms = "Blowtorch Arms";
   }
-  public buildRobotLegs(): void {
-    this.robot.setRobotLegs("Roller Skates");
+
+  public buildLegs(): void {
+    this.robot.legs = "Roller Skates";
   }
 }
 
 class RobotEngineer {
-  private robotBuilder: RobotBuilder;
-
-  public constructor(robotBuilder: RobotBuilder) {
-    this.robotBuilder = robotBuilder;
-  }
+  public constructor(private builder: RobotBuilder) {}
 
   public getRobot(): Robot {
-    return this.robotBuilder.getRobot();
+    return this.builder.getRobot();
   }
 
   public makeRobot(): void {
-    this.robotBuilder.buildRobotHead();
-    this.robotBuilder.buildRobotTorso();
-    this.robotBuilder.buildRobotArms();
-    this.robotBuilder.buildRobotLegs();
+    this.builder.buildHead();
+    this.builder.buildTorso();
+    this.builder.buildArms();
+    this.builder.buildLegs();
   }
 }
 
-// -------------------
+// -------------------------------------------------------------------------------
+
 const oldStyleRobot: OldRobotBuilder = new OldRobotBuilder();
 const robotEngineer: RobotEngineer = new RobotEngineer(oldStyleRobot);
 
 robotEngineer.makeRobot();
-const firstRobot: Robot = robotEngineer.getRobot();
+const aRobot: Robot = robotEngineer.getRobot();
 
-console.log("robot head :", firstRobot.getRobotHead());
-console.log("robot torso:", firstRobot.getRobotTorso());
-console.log("robot arms :", firstRobot.getRobotArms());
-console.log("robot legs :", firstRobot.getRobotLegs());
+console.log("robot head :", aRobot.head);
+console.log("robot torso:", aRobot.torso);
+console.log("robot arms :", aRobot.arms);
+console.log("robot legs :", aRobot.legs);
