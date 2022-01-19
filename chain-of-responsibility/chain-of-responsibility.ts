@@ -12,50 +12,27 @@
 
 interface Chain {
   setNextChain(nextChain: Chain): void;
-  calculate(request: Numbers): void;
+  calculate(request: NumberRequest): void;
 }
 
-class Numbers {
-  private number1: number;
-  private number2: number;
-
-  private calculationWanted: string;
-
+class NumberRequest {
   public constructor(
-    newNumber1: number,
-    newNumber2: number,
-    calcWanted: string
-  ) {
-    this.number1 = newNumber1;
-    this.number2 = newNumber2;
-    this.calculationWanted = calcWanted;
-  }
-
-  public getNumber1(): number {
-    return this.number1;
-  }
-
-  public getNumber2(): number {
-    return this.number2;
-  }
-
-  public getCalcWanted(): string {
-    return this.calculationWanted;
-  }
+    readonly a: number,
+    readonly b: number,
+    readonly operation: string
+  ) {}
 }
 
 class AddNumbers implements Chain {
-  private nextInChain: Chain;
+  public nextInChain: Chain;
 
-  setNextChain(nextChain: Chain): void {
+  setNextChain(nextChain: Chain) {
     this.nextInChain = nextChain;
   }
-  calculate(request: Numbers): void {
-    if (request.getCalcWanted() == "add") {
-      console.log(
-        `${request.getNumber1()} + ${request.getNumber2()} = ${request.getNumber1() +
-        request.getNumber2()}`
-      );
+
+  calculate(request: NumberRequest) {
+    if (request.operation == "add") {
+      console.log(`${request.a} + ${request.b} = ${request.a + request.b}`);
     } else {
       this.nextInChain.calculate(request);
     }
@@ -65,15 +42,13 @@ class AddNumbers implements Chain {
 class SubtractNumbers implements Chain {
   private nextInChain: Chain;
 
-  setNextChain(nextChain: Chain): void {
+  setNextChain(nextChain: Chain) {
     this.nextInChain = nextChain;
   }
-  calculate(request: Numbers): void {
-    if (request.getCalcWanted() == "subtract") {
-      console.log(
-        `${request.getNumber1()} - ${request.getNumber2()} = ${request.getNumber1() -
-        request.getNumber2()}`
-      );
+
+  calculate(request: NumberRequest) {
+    if (request.operation == "subtract") {
+      console.log(`${request.a} - ${request.b} = ${request.a - request.b}`);
     } else {
       this.nextInChain.calculate(request);
     }
@@ -83,15 +58,13 @@ class SubtractNumbers implements Chain {
 class MultiplyNumbers implements Chain {
   private nextInChain: Chain;
 
-  setNextChain(nextChain: Chain): void {
+  setNextChain(nextChain: Chain) {
     this.nextInChain = nextChain;
   }
-  calculate(request: Numbers): void {
-    if (request.getCalcWanted() == "multiply") {
-      console.log(
-        `${request.getNumber1()} * ${request.getNumber2()} = ${request.getNumber1() *
-        request.getNumber2()}`
-      );
+
+  calculate(request: NumberRequest) {
+    if (request.operation == "multiply") {
+      console.log(`${request.a} * ${request.b} = ${request.a * request.b}`);
     } else {
       this.nextInChain.calculate(request);
     }
@@ -101,22 +74,21 @@ class MultiplyNumbers implements Chain {
 class DivideNumbers implements Chain {
   private nextInChain: Chain;
 
-  setNextChain(nextChain: Chain): void {
+  setNextChain(nextChain: Chain) {
     this.nextInChain = nextChain;
   }
-  calculate(request: Numbers): void {
-    if (request.getCalcWanted() == "divide") {
-      console.log(
-        `${request.getNumber1()} / ${request.getNumber2()} = ${request.getNumber1() /
-        request.getNumber2()}`
-      );
+
+  calculate(request: NumberRequest) {
+    if (request.operation == "divide") {
+      console.log(`${request.a} / ${request.b} = ${request.a / request.b}`);
     } else {
       this.nextInChain.calculate(request);
     }
   }
 }
 
-//--------------------------------------------------------
+// --------------------------------------------------------
+
 const chainCalc1: Chain = new AddNumbers();
 const chainCalc2: Chain = new SubtractNumbers();
 const chainCalc3: Chain = new MultiplyNumbers();
@@ -126,6 +98,6 @@ chainCalc1.setNextChain(chainCalc2);
 chainCalc2.setNextChain(chainCalc3);
 chainCalc3.setNextChain(chainCalc4);
 
-const request: Numbers = new Numbers(4, 2, "subtract");
+const request = new NumberRequest(4, 2, "subtract");
 
 chainCalc1.calculate(request);
