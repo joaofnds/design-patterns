@@ -25,22 +25,27 @@ interface ElectronicDevice {
 
 class Television implements ElectronicDevice {
   private volume: number = 0;
+
   on(): void {
-    console.log("TV is ON")
+    console.log("TV is ON");
   }
+
   off(): void {
-    console.log("TV is OFF")
+    console.log("TV is OFF");
   }
+
   volumeUp(): void {
     this.volume++;
     this.displayVolume();
   }
+
   volumeDown(): void {
     this.volume--;
     this.displayVolume();
   }
+
   private displayVolume() {
-    console.log(`TV Volume is at ${this.volume}`)
+    console.log(`TV Volume is at ${this.volume}`);
   }
 }
 
@@ -116,20 +121,21 @@ class TVRemote {
 
 //------------------------------------------------------------------------------
 
-const device: ElectronicDevice = TVRemote.getDevice();
+const device = TVRemote.getDevice();
 
-const commands: { [key: string]: Command } = {
+const commands = {
   on: new TurnTVOn(device),
   off: new TurnTVOff(device),
   up: new TurnTVUp(device),
-  down: new TurnTVDown(device)
-}
-const buttons: { [key: string]: DeviceButton } = {
+  down: new TurnTVDown(device),
+};
+
+const buttons = {
   on: new DeviceButton(commands.on),
   off: new DeviceButton(commands.off),
   up: new DeviceButton(commands.up),
   down: new DeviceButton(commands.down),
-}
+};
 
 buttons.off.press();
 buttons.on.press();
