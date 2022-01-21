@@ -9,17 +9,56 @@
  *
  * @see http://www.newthinktank.com/2012/10/composite-design-pattern-tutorial/
  */
+
 abstract class SongComponent {
-  public add(newSongComponent: SongComponent) {
-    throw new Error("Method not implemented.");
+  public abstract add(song: SongComponent): void;
+  public abstract remove(song: SongComponent): void;
+  public abstract getComponent(index: number): SongComponent;
+  public abstract getSongName(): string;
+  public abstract getBandName(): string;
+  public abstract getReleaseYear(): number;
+  public abstract displaySongInfo(): void;
+}
+
+class SongGroup extends SongComponent {
+  private components: Array<SongComponent> = new Array();
+
+  public constructor(
+    private readonly name: string,
+    private readonly description: string
+  ) {
+    super();
   }
 
-  public remove(songComponent: SongComponent) {
-    throw new Error("Method not implemented.");
+  public getGroupName(): string {
+    return this.name;
   }
 
-  public getComponent(componentIndex: number): SongComponent {
-    throw new Error("Method not implemented.");
+  public getGroupDescription(): string {
+    return this.description;
+  }
+
+  public add(song: SongComponent): void {
+    this.components.push(song);
+  }
+
+  public remove(song: SongComponent): void {
+    const songIndex = this.components.indexOf(song);
+    if (songIndex !== -1) {
+      this.components.splice(songIndex, 1);
+    }
+  }
+
+  public getComponent(index: number): SongComponent {
+    return this.components[index];
+  }
+
+  public displaySongInfo(): void {
+    console.log(this.getGroupName(), this.getGroupDescription());
+
+    for (const song of this.components) {
+      song.displaySongInfo();
+    }
   }
 
   public getSongName(): string {
@@ -33,77 +72,23 @@ abstract class SongComponent {
   public getReleaseYear(): number {
     throw new Error("Method not implemented.");
   }
-
-  public displaySongInfo(): void {
-    throw new Error("Method not implemented.");
-  }
-}
-
-class SongGroup extends SongComponent {
-  private songComponents: Array<SongComponent> = new Array();
-
-  private groupName: string;
-  private groupDescription: string;
-
-  public constructor(newGroupName: string, newGroupDescription: string) {
-    super();
-    this.groupName = newGroupName;
-    this.groupDescription = newGroupDescription;
-  }
-
-  public getGroupName(): string {
-    return this.groupName;
-  }
-
-  public getGroupDescription(): string {
-    return this.groupDescription;
-  }
-
-  public add(newSongComponent: SongComponent): void {
-    this.songComponents.push(newSongComponent);
-  }
-
-  public remove(songComponent: SongComponent): void {
-    const indexOfSong = this.songComponents.indexOf(songComponent);
-    if (indexOfSong !== -1) {
-      this.songComponents.splice(indexOfSong, 1);
-    }
-  }
-
-  public getComponent(componentIndex: number): SongComponent {
-    return this.songComponents[componentIndex];
-  }
-
-  public displaySongInfo(): void {
-    console.log(this.getGroupName(), this.getGroupDescription());
-    for (const song of this.songComponents) {
-      (song as Song).displaySongInfo();
-    }
-  }
 }
 
 class Song extends SongComponent {
-  private songName: string;
-  private bandName: string;
-  private releaseYear: number;
-
   public constructor(
-    newSongName: string,
-    newBandName: string,
-    newReleaseYear: number
+    private readonly name: string,
+    private readonly band: string,
+    private readonly releaseYear: number
   ) {
     super();
-    this.songName = newSongName;
-    this.bandName = newBandName;
-    this.releaseYear = newReleaseYear;
   }
 
   public getSongName(): string {
-    return this.songName;
+    return this.name;
   }
 
   public getBandName(): string {
-    return this.bandName;
+    return this.band;
   }
 
   public getReleaseYear(): number {
@@ -115,14 +100,22 @@ class Song extends SongComponent {
       `${this.getSongName()} was released by ${this.getBandName()} in ${this.getReleaseYear()}`
     );
   }
+
+  public add(_newSongComponent: SongComponent): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public remove(_songComponent: SongComponent): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public getComponent(_componentIndex: number): SongComponent {
+    throw new Error("Method not implemented.");
+  }
 }
 
 class DiscJockey {
-  private songList: SongComponent;
-
-  public constructor(newSongList: SongComponent) {
-    this.songList = newSongList;
-  }
+  public constructor(private readonly songList: SongComponent) {}
 
   public getSongList(): void {
     this.songList.displaySongInfo();
