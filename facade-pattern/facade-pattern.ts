@@ -21,46 +21,38 @@ class WelcomeToBank {
 }
 
 class AccountNumberCheck {
-  private accountNumber: number = 12345678;
-
-  public getAccountNumber(): number {
-    return this.accountNumber;
-  }
+  readonly accountNumber: number = 12345678;
 
   public accountActive(accountNumber: number): boolean {
-    return accountNumber == this.getAccountNumber();
+    return accountNumber == this.accountNumber;
   }
 }
 
 class SecurityCodeCheck {
-  private securityCode: number = 1234;
-
-  public getSecurityCode(): number {
-    return this.securityCode;
-  }
+  readonly securityCode: number = 1234;
 
   public isCodeCorrect(securityCode: number): boolean {
-    return securityCode == this.getSecurityCode();
+    return securityCode == this.securityCode;
   }
 }
 
 class FundsCheck {
-  private cashInAccount: number = 1000;
+  #cashInAccount: number = 1000;
 
-  public getCashInAccount(): number {
-    return this.cashInAccount;
+  get cashInAccount(): number {
+    return this.#cashInAccount;
   }
 
   public decreaseCashInAccount(cashWithDraw: number): void {
-    this.cashInAccount -= cashWithDraw;
+    this.#cashInAccount -= cashWithDraw;
   }
 
   public increaseCashInAccount(cashDeposited: number): void {
-    this.cashInAccount += cashDeposited;
+    this.#cashInAccount += cashDeposited;
   }
 
   public haveEnoughMoney(cashToWithdrawal: number): boolean {
-    return cashToWithdrawal > this.getCashInAccount();
+    return this.#cashInAccount >= cashToWithdrawal;
   }
 
   public makeDeposit(cashToDeposit: number): void {
@@ -69,36 +61,25 @@ class FundsCheck {
 }
 
 class BankAccountFacade {
-  private accountNumber: number;
-  private securityCode: number;
-  private accChecker: AccountNumberCheck;
-  private codeChecker: SecurityCodeCheck;
-  private fundChecker: FundsCheck;
+  private readonly accChecker: AccountNumberCheck;
+  private readonly codeChecker: SecurityCodeCheck;
+  private readonly fundChecker: FundsCheck;
+  private readonly bankWelcome: WelcomeToBank;
 
-  private bankWelcome: WelcomeToBank;
-
-  public constructor(newAccountNumber: number, newSecurityCode: number) {
-    this.accountNumber = newAccountNumber;
-    this.securityCode = newSecurityCode;
-
+  public constructor(
+    readonly accountNumber: number,
+    readonly securityCode: number
+  ) {
     this.bankWelcome = new WelcomeToBank();
     this.accChecker = new AccountNumberCheck();
     this.codeChecker = new SecurityCodeCheck();
     this.fundChecker = new FundsCheck();
   }
 
-  public getAccountNumber(): number {
-    return this.accountNumber;
-  }
-
-  public getSecurityCode(): number {
-    return this.securityCode;
-  }
-
   public withdrawCash(cashToGet: number): void {
     if (
-      this.accChecker.accountActive(this.getAccountNumber()) &&
-      this.codeChecker.isCodeCorrect(this.getSecurityCode()) &&
+      this.accChecker.accountActive(this.accountNumber) &&
+      this.codeChecker.isCodeCorrect(this.securityCode) &&
       this.fundChecker.haveEnoughMoney(cashToGet)
     ) {
       this.fundChecker.decreaseCashInAccount(cashToGet);
@@ -110,8 +91,8 @@ class BankAccountFacade {
 
   public depositCash(cashToDeposit: number): void {
     if (
-      this.accChecker.accountActive(this.getAccountNumber()) &&
-      this.codeChecker.isCodeCorrect(this.getSecurityCode())
+      this.accChecker.accountActive(this.accountNumber) &&
+      this.codeChecker.isCodeCorrect(this.securityCode)
     ) {
       this.fundChecker.makeDeposit(cashToDeposit);
       console.log("transaction complete");
@@ -121,8 +102,10 @@ class BankAccountFacade {
   }
 }
 
-//-----------------------------------------------------------
-const accessingBank: BankAccountFacade = new BankAccountFacade(12345678, 1234);
-accessingBank.withdrawCash(5000);
-accessingBank.withdrawCash(90000);
-accessingBank.depositCash(20000);
+// ----------------------------------------------------------------------------
+
+const accessingBank = new BankAccountFacade(12345678, 1234);
+accessingBank.withdrawCash(500);
+accessingBank.withdrawCash(501);
+accessingBank.depositCash(1);
+accessingBank.withdrawCash(501);
