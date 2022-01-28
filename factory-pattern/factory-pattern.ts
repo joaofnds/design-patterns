@@ -13,51 +13,30 @@
  */
 
 abstract class EnemyShip {
-  private name: string;
-  private amtDamage: number;
-
-  public getName() {
-    return this.name;
-  }
-
-  public setName(name: string) {
-    this.name = name;
-  }
-
-  public getDamage() {
-    return this.amtDamage;
-  }
-
-  public setDamage(damage: number) {
-    this.amtDamage = damage;
-  }
+  constructor(private name: string, private damage: number) {}
 
   public followHeroShip() {
-    console.log(this.getName(), "is following the hero");
+    console.log(this.name, "is following the hero");
   }
 
   public displayEnemyShip() {
-    console.log(this.getName(), "is on the screen");
+    console.log(this.name, "is on the screen");
   }
 
   public enemyShipShoots() {
-    console.log(this.getName(), "attacks and does", this.getDamage(), "damage");
+    console.log(this.name, "attacks and does", this.damage, "damage");
   }
 }
 
 class UFOEnemyShip extends EnemyShip {
   constructor() {
-    super();
-    this.setName("UFO Enemy Ship");
-    this.setDamage(20.0);
+    super("UFO Enemy Ship", 20.0);
   }
 }
 
 class RocketEnemyShip extends EnemyShip {
   constructor() {
-    super();
-    this.setName("Rocker Enemy Ship");
-    this.setDamage(10.0);
+    super("Rocker Enemy Ship", 10.0);
   }
 }
 
@@ -74,4 +53,9 @@ abstract class EnemyShipFactory {
   }
 }
 
-console.log(EnemyShipFactory.make("rocket").displayEnemyShip());
+// ------------------------------------------------------------------------------
+
+const ship = EnemyShipFactory.make("rocket");
+ship.displayEnemyShip();
+ship.followHeroShip();
+ship.enemyShipShoots();
