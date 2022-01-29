@@ -12,48 +12,20 @@
  */
 
 class ConversionContext {
-  private conversionQuestion: string = "";
-  private conversionResponse: string = "";
-  private fromConversion: string = "";
-  private toConversion: string = "";
-  private partsOfQuestion: Array<string>;
+  readonly from: keyof Expression;
+  readonly to: keyof Expression;
+  readonly quantity: number;
 
-  private quantity: number;
-
-  public constructor(input: string) {
-    this.conversionQuestion = input;
-    this.partsOfQuestion = input.split(" ");
-    this.fromConversion = this.getCapitalized(
-      this.sanitize(this.partsOfQuestion[1])
-    );
-    this.toConversion = this.sanitize(this.partsOfQuestion[3]).toLowerCase();
-    this.quantity = Number(this.partsOfQuestion[0]);
-    this.conversionResponse = `${this.partsOfQuestion[0]} ${
-      this.partsOfQuestion[1]
-      } equals `;
+  public constructor(question: string) {
+    const components = question.split(" ");
+    this.from = this.capitalize(
+      this.sanitize(components[1])
+    ) as keyof Expression;
+    this.to = this.sanitize(components[3]) as keyof Expression;
+    this.quantity = Number(components[0]);
   }
 
-  public getInput(): string {
-    return this.conversionQuestion;
-  }
-
-  public getFromConversion(): string {
-    return this.fromConversion;
-  }
-
-  public getToConversion(): string {
-    return this.toConversion;
-  }
-
-  public getResponse(): string {
-    return this.conversionResponse;
-  }
-
-  public getQuantity(): number {
-    return this.quantity;
-  }
-
-  private getCapitalized(str: string): string {
+  private capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
@@ -77,9 +49,11 @@ class Bit extends Expression {
   bits(quantity: number): string {
     return String(quantity);
   }
+
   nibbles(quantity: number): string {
     return String(Math.floor(quantity / 4));
   }
+
   bytes(quantity: number): string {
     return String(Math.floor(quantity / 8));
   }
@@ -89,9 +63,11 @@ class Nibble extends Expression {
   bits(quantity: number): string {
     return String(quantity * 4);
   }
+
   nibbles(quantity: number): string {
     return String(quantity);
   }
+
   bytes(quantity: number): string {
     return String(Math.floor(quantity / 2));
   }
@@ -101,16 +77,19 @@ class Byte extends Expression {
   bits(quantity: number): string {
     return String(quantity * 8);
   }
+
   nibbles(quantity: number): string {
     return String(quantity * 2);
   }
+
   bytes(quantity: number): string {
     return String(quantity);
   }
 }
 
 //---------------------------------------------
-const getClassFromInput = (input): Bit | Nibble | Byte | null => {
+
+function getClassFromInput(input: string) {
   switch (input) {
     case "Bits":
       return new Bit();
@@ -119,17 +98,12 @@ const getClassFromInput = (input): Bit | Nibble | Byte | null => {
     case "Nibbles":
       return new Nibble();
     default:
-      return null;
+      throw new Error(`unknown input class '${input}'`);
   }
-};
+}
 
 const questionAsked = "8 bits to bytes";
-const question: ConversionContext = new ConversionContext(questionAsked);
+const { from, to, quantity } = new ConversionContext(questionAsked);
 
-const fromConversion: string = question.getFromConversion();
-const toConversion: string = question.getToConversion();
-const quantity: number = question.getQuantity();
-
-const convertFrom: Expression = getClassFromInput(fromConversion);
-const result = convertFrom[toConversion](quantity);
-console.log(`${quantity} ${fromConversion} is ${result} ${toConversion}`);
+const result = getClassFromInput(from)[to](quantity);
+console.log(`${quantity} ${from} is ${result} ${to}`);
