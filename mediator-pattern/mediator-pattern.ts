@@ -13,40 +13,18 @@
  */
 
 class StockOffer {
-  private stockShares: number = 0;
-  private stockSymbol: string = "";
-  private colleagueCode: number = 0;
-
   public constructor(
-    stockShares: number,
-    stockSymbol: string,
-    colleagueCode: number
-  ) {
-    this.stockShares = stockShares;
-    this.stockSymbol = stockSymbol;
-    this.colleagueCode = colleagueCode;
-  }
-
-  public getStockShares(): number {
-    return this.stockShares;
-  }
-
-  public getStockSymbol(): string {
-    return this.stockSymbol;
-  }
-
-  public getColleagueCode(): number {
-    return this.colleagueCode;
-  }
+    readonly stockShares: number,
+    readonly stockSymbol: string,
+    readonly colleagueCode: number
+  ) {}
 }
 
 abstract class Colleague {
-  private mediator: Mediator;
-  private colleagueCode: number;
+  private colleagueCode: number = -1;
 
-  public constructor(mediator: Mediator) {
-    this.mediator = mediator;
-    this.mediator.addColleague(this);
+  public constructor(private readonly mediator: Mediator) {
+    mediator.addColleague(this);
   }
 
   public saleOffer(stock: string, shares: number): void {
@@ -83,27 +61,16 @@ interface Mediator {
 }
 
 class StockMediator implements Mediator {
-  private colleagues: { [key: number]: Colleague };
-  private stockBuyOffers: Array<StockOffer>;
-  private stockSaleOffers: Array<StockOffer>;
-
   private colleagueCode: number = 0;
-
-  public constructor() {
-    this.colleagueCode = 0;
-    this.colleagues = {};
-    this.stockBuyOffers = [];
-    this.stockSaleOffers = [];
-  }
+  private colleagues: Record<number, Colleague> = {};
+  private stockBuyOffers: StockOffer[] = [];
+  private stockSaleOffers: StockOffer[] = [];
 
   saleOffer(stock: string, shares: number, colleagueCode: number): void {
     let stockSold: boolean = false;
 
     for (let offer of this.stockBuyOffers) {
-      if (
-        offer.getStockSymbol() === "stock" &&
-        offer.getStockShares() === shares
-      ) {
+      if (offer.stockSymbol === "stock" && offer.stockShares === shares) {
         console.log(
           `${shares} shares of ${stock} sold to colleague code ${colleagueCode}`
         );
@@ -124,10 +91,7 @@ class StockMediator implements Mediator {
     let stockBought: boolean = false;
 
     for (let offer of this.stockSaleOffers) {
-      if (
-        offer.getStockSymbol() === stock &&
-        offer.getStockShares() === shares
-      ) {
+      if (offer.stockSymbol === stock && offer.stockShares === shares) {
         console.log(
           `${shares} shares of ${stock} bought by colleague code ${colleagueCode}`
         );
@@ -154,12 +118,12 @@ class StockMediator implements Mediator {
   getStockOfferings(): void {
     console.log("Stocks for sale");
     for (let offer of this.stockSaleOffers) {
-      console.log(`\t- ${offer.getStockShares()} of ${offer.getStockSymbol()}`);
+      console.log(`\t- ${offer.stockShares} of ${offer.stockSymbol}`);
     }
 
     console.log("Stocks buy offers:");
     for (let offer of this.stockBuyOffers) {
-      console.log(`\t- ${offer.getStockShares()} of ${offer.getStockSymbol()}`);
+      console.log(`\t- ${offer.stockShares} of ${offer.stockSymbol}`);
     }
   }
 }
