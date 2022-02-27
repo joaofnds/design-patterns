@@ -22,14 +22,21 @@ interface Observer {
   update(stocks: Object): void;
 }
 
-class StockGrabber implements Subject {
-  private observers: Array<Observer>;
-  private stocks: Object;
-
-  constructor() {
-    this.observers = new Array();
-    this.stocks = new Array();
+class DuplicateStockError extends Error {
+  constructor(name: string) {
+    super(`stock '${name}' already exists`);
   }
+}
+
+class StockNotFoundError extends Error {
+  constructor(name: string) {
+    super(`stock '${name}' doens't exists`);
+  }
+}
+
+class StockGrabber implements Subject {
+  private observers = new Array<Observer>();
+  private stocks: Record<string, number> = {};
 
   register(o: Observer): void {
     this.observers.push(o);
@@ -41,40 +48,45 @@ class StockGrabber implements Subject {
   }
 
   notifyObservers(): void {
-    this.observers.forEach(o => o.update(this.stocks));
+    const stocksCopy = JSON.parse(JSON.stringify(this.stocks));
+    this.observers.forEach((o) => o.update(stocksCopy));
   }
 
   addStock(name: string, price: number) {
-    if (this.stocks[name] !== undefined) throw new Error("key already exist");
+    if (this.hasStock(name)) throw new DuplicateStockError(name);
 
     this.stocks[name] = price;
     this.notifyObservers();
   }
 
   removeStock(name: string) {
+    if (!this.hasStock(name)) throw new StockNotFoundError(name);
+
     delete this.stocks[name];
     this.notifyObservers();
   }
 
   updateStock(name: string, price: number) {
-    if (this.stocks[name] !== undefined) throw new Error("stock doesn't exist");
+    if (!this.hasStock(name)) throw new StockNotFoundError(name);
 
     this.stocks[name] = price;
     this.notifyObservers();
   }
+
+  private hasStock(name: string) {
+    return name in this.stocks;
+  }
 }
 
 class StockObserver implements Observer {
-  private stocks: Object;
-  private grabber: StockGrabber;
+  private stocks = new Object();
 
   constructor(grabber: StockGrabber) {
-    this.stocks = new Object();
-    this.grabber = grabber;
     grabber.register(this);
   }
 
   update(stocks: Object): void {
+    console.log("got an update", { from: this.stocks, to: stocks });
     this.stocks = stocks;
   }
 }
