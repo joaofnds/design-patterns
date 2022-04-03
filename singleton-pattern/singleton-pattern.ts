@@ -8,9 +8,9 @@
  */
 
 class Singleton {
-  static firstInstance: Singleton = null;
+  private static firstInstance: Singleton = null;
 
-  private constructor() { }
+  private constructor() {}
 
   static getInstance(): Singleton {
     if (this.firstInstance === null) {
@@ -20,3 +20,5 @@ class Singleton {
     return this.firstInstance;
   }
 }
+
+Singleton.getInstance() === Singleton.getInstance(); //=> true
