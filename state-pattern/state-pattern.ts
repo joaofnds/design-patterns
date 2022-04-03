@@ -16,98 +16,82 @@
 interface ATMState {
   insertCard(): void;
   ejectCard(): void;
-  insertPin(pinEntered: number): void;
-  requestCash(cashToWithdraw: number): void;
+  insertPin(pin: number): void;
+  requestCash(amout: number): void;
 }
 
 class HasCard implements ATMState {
-  atmMachine: ATMMachine;
+  public constructor(private readonly atm: ATMMachine) {}
 
-  public constructor(newATMMachine: ATMMachine) {
-    this.atmMachine = newATMMachine;
-  }
-
-  insertCard(): void {
+  insertCard() {
     console.error("Card tray full");
   }
 
-  ejectCard(): void {
-    this.atmMachine.setATMState(this.atmMachine.getNoCardState());
+  ejectCard() {
+    this.atm.setNoCardState();
     console.log("Card ejected");
   }
 
-  insertPin(pinEntered: number): void {
+  insertPin(pinEntered: number) {
     if (pinEntered === 1234) {
-      this.atmMachine.correctPinEntered = true;
-      this.atmMachine.setATMState(this.atmMachine.getHasPin());
+      this.atm.setHasPin();
     } else {
       console.error("Wrong PIN");
-      this.atmMachine.correctPinEntered = false;
       this.ejectCard();
     }
   }
 
-  requestCash(cashToWithdraw: number): void {
+  requestCash(_amount: number) {
     console.error("Enter PIN first");
   }
 }
 
 class NoCard implements ATMState {
-  atmMachine: ATMMachine;
+  public constructor(private readonly atm: ATMMachine) {}
 
-  public constructor(newATMMachine: ATMMachine) {
-    this.atmMachine = newATMMachine;
-  }
-
-  insertCard(): void {
+  insertCard() {
     console.log("Please enter a PIN");
-    this.atmMachine.setATMState(this.atmMachine.getHasCardState());
+    this.atm.setHasCardState();
   }
 
-  ejectCard(): void {
+  ejectCard() {
     console.error("Enter a card first");
   }
 
-  insertPin(pinEntered: number): void {
+  insertPin(_pin: number) {
     console.error("Enter a card first");
   }
 
-  requestCash(cashToWithdraw: number): void {
+  requestCash(_amount: number) {
     console.error("Enter a card first");
   }
 }
 
 class HasPin implements ATMState {
-  atmMachine: ATMMachine;
+  public constructor(private readonly atm: ATMMachine) {}
 
-  public constructor(newATMMachine: ATMMachine) {
-    this.atmMachine = newATMMachine;
-  }
-
-  insertCard(): void {
+  insertCard() {
     console.error("Card tray full");
   }
 
-  ejectCard(): void {
-    this.atmMachine.setATMState(this.atmMachine.getNoCardState());
+  ejectCard() {
+    this.atm.setNoCardState();
     console.log("Card ejected");
   }
 
-  insertPin(pinEntered: number): void {
+  insertPin(_pin: number) {
     console.log("Already entered PIN");
   }
 
-  requestCash(cashToWithdraw: number): void {
-    if (cashToWithdraw > this.atmMachine.cashInMachine) {
+  requestCash(amount: number) {
+    if (amount > this.atm.cashAvailable) {
       console.error("Don't have that cash");
     } else {
-      console.log(`${cashToWithdraw} is provided by the machine`);
-      this.atmMachine.setCashInMachine(
-        this.atmMachine.cashInMachine - cashToWithdraw
-      );
+      console.log(`${amount} is provided by the machine`);
+      this.atm.cashAvailable = this.atm.cashAvailable - amount;
 
-      if (this.atmMachine.cashInMachine <= 0) {
-        this.atmMachine.setATMState(this.atmMachine.getNoCashState());
+      if (this.atm.cashAvailable <= 0) {
+        this.atm.setNoCashState();
       }
     }
 
@@ -116,40 +100,34 @@ class HasPin implements ATMState {
 }
 
 class NoCash implements ATMState {
-  atmMachine: ATMMachine;
+  public constructor(_atm: ATMMachine) {}
 
-  public constructor(newATMMachine: ATMMachine) {
-    this.atmMachine = newATMMachine;
-  }
-
-  insertCard(): void {
+  insertCard() {
     console.error("No money");
   }
 
-  ejectCard(): void {
+  ejectCard() {
     console.error("No money");
     console.error("You didn't enter a card");
   }
 
-  insertPin(pinEntered: number): void {
+  insertPin(_pin: number) {
     console.error("No money");
   }
 
-  requestCash(cashToWithdraw: number): void {
+  requestCash(_amount: number) {
     console.error("No money");
   }
 }
 
 class ATMMachine {
-  hasCard: ATMState;
-  noCard: ATMState;
-  hasCorrectPin: ATMState;
-  atmOutOfMoney: ATMState;
+  private readonly hasCard: ATMState;
+  private readonly noCard: ATMState;
+  private readonly hasCorrectPin: ATMState;
+  private readonly atmOutOfMoney: ATMState;
+  private state: ATMState;
 
-  atmState: ATMState;
-
-  cashInMachine: number = 2000;
-  correctPinEntered: boolean = false;
+  cashAvailable = 2000;
 
   public constructor() {
     this.hasCard = new HasCard(this);
@@ -157,51 +135,43 @@ class ATMMachine {
     this.hasCorrectPin = new HasPin(this);
     this.atmOutOfMoney = new NoCash(this);
 
-    this.atmState = this.noCard;
+    this.state = this.noCard;
 
-    if (this.cashInMachine < 0) {
-      this.atmState = this.atmOutOfMoney;
+    if (this.cashAvailable < 0) {
+      this.state = this.atmOutOfMoney;
     }
   }
 
-  public setATMState(newATMState: ATMState): void {
-    this.atmState = newATMState;
+  public insertCard() {
+    this.state.insertCard();
   }
 
-  public setCashInMachine(newCashInMachine: number): void {
-    this.cashInMachine = newCashInMachine;
+  public ejectCard() {
+    this.state.ejectCard();
   }
 
-  public insertCard(): void {
-    this.atmState.insertCard();
+  public requestCash(amount: number) {
+    this.state.requestCash(amount);
   }
 
-  public ejectCard(): void {
-    this.atmState.ejectCard();
+  public insertPin(pin: number) {
+    this.state.insertPin(pin);
   }
 
-  public requestCash(cashToWithdraw: number): void {
-    this.atmState.requestCash(cashToWithdraw);
+  public setHasCardState() {
+    this.state = this.hasCard;
   }
 
-  public insertPin(pinEntered: number): void {
-    this.atmState.insertPin(pinEntered);
+  public setNoCardState() {
+    this.state = this.noCard;
   }
 
-  public getHasCardState(): ATMState {
-    return this.hasCard;
+  public setHasPin() {
+    this.state = this.hasCorrectPin;
   }
 
-  public getNoCardState(): ATMState {
-    return this.noCard;
-  }
-
-  public getHasPin(): ATMState {
-    return this.hasCorrectPin;
-  }
-
-  public getNoCashState(): ATMState {
-    return this.atmOutOfMoney;
+  public setNoCashState() {
+    this.state = this.atmOutOfMoney;
   }
 }
 
