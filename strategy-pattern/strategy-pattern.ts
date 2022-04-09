@@ -13,55 +13,48 @@
  */
 
 class Animal {
-  public flyingType: Flys;
+  flyingType: Flyer;
 
-  public tryToFly(): string {
+  tryToFly(): string {
     return this.flyingType.fly();
   }
 
-  public setFlyingAbility(newFlyType: Flys): void {
-    this.flyingType = newFlyType;
+  setFlyingAbility(flyingType: Flyer) {
+    this.flyingType = flyingType;
   }
 }
 
 class Dog extends Animal {
-  public constructor() {
-    super();
-    this.flyingType = new CantFly();
-  }
+  flyingType = new CantFly();
 }
 
 class Bird extends Animal {
-  public constructor() {
-    super();
-    this.flyingType = new ItFlys();
-  }
+  flyingType = new ItFlies();
 }
 
-interface Flys {
+interface Flyer {
   fly(): string;
 }
 
-class ItFlys implements Flys {
-  public fly(): string {
+class ItFlies implements Flyer {
+  fly() {
     return "flying high";
   }
 }
 
-class CantFly implements Flys {
-  public fly(): string {
+class CantFly implements Flyer {
+  fly() {
     return "I can't fly";
   }
 }
 
 //------------------------------------------------------------------------------
 
-const sparky: Animal = new Dog();
-const tweety: Animal = new Bird();
+const sparky = new Dog();
+const tweety = new Bird();
 
-console.log(`dog : ${sparky.tryToFly()}`)
-console.log(`bird: ${tweety.tryToFly()}`)
+console.log(`dog:  ${sparky.tryToFly()}`);
+console.log(`bird: ${tweety.tryToFly()}`);
 
-sparky.setFlyingAbility(new ItFlys());
-
-console.log(`dog : ${sparky.tryToFly()}`)
+sparky.setFlyingAbility(new ItFlies());
+console.log(`dog:  ${sparky.tryToFly()}`);
