@@ -13,109 +13,96 @@
  */
 
 abstract class Hoagie {
-  makeSandwich(): void {
-    this.cutBun();
-
-    if (this.customerWantsMeat()) {
-      this.addMeat();
-    }
-
-    if (this.customerWantsCheese()) {
-      this.addCheese();
-    }
-
-    if (this.customerWantsVegetables()) {
-      this.addVegetables();
-    }
-
-    if (this.customerWantsCondiments()) {
-      this.addCondiments();
-    }
-  }
-
-  public cutBun(): void {
-    console.log("The Hoagie is cut");
-  }
-
-  customerWantsMeat(): boolean {
-    return true;
-  }
-  customerWantsCheese(): boolean {
-    return true;
-  }
-  customerWantsVegetables(): boolean {
-    return true;
-  }
-  customerWantsCondiments(): boolean {
-    return true;
-  }
-
   abstract addMeat(): void;
   abstract addCheese(): void;
   abstract addVegetables(): void;
   abstract addCondiments(): void;
 
-  public wrapTheHoagie(): void {
+  makeSandwich() {
+    this.cutBun();
+
+    if (this.customerWantsMeat()) this.addMeat();
+    if (this.customerWantsCheese()) this.addCheese();
+    if (this.customerWantsVegetables()) this.addVegetables();
+    if (this.customerWantsCondiments()) this.addCondiments();
+  }
+
+  cutBun() {
+    console.log("The Hoagie is cut");
+  }
+
+  customerWantsMeat() {
+    return true;
+  }
+
+  customerWantsCheese() {
+    return true;
+  }
+
+  customerWantsVegetables() {
+    return true;
+  }
+
+  customerWantsCondiments() {
+    return true;
+  }
+
+  wrapTheHoagie() {
     console.log("Wrap the hoagie");
   }
 }
 
 class ItalianHoagie extends Hoagie {
-  meatUsed: Array<String> = ["Salami", "Pepperoni", "Capicola Ham"];
-  cheeseUsed: Array<String> = ["Provolone"];
-  veggiesUsed: Array<String> = [
-    "Lettuce",
-    "Tomatoes",
-    "Onions",
-    "Sweet Peppers"
-  ];
-  condimentsUsed: Array<String> = ["Oil", "Vinegar"];
+  meats = ["Salami", "Pepperoni", "Capicola Ham"];
+  cheese = ["Provolone"];
+  veggies = ["Lettuce", "Tomatoes", "Onions", "Sweet Peppers"];
+  condiments = ["Oil", "Vinegar"];
 
-  addMeat(): void {
-    console.log("Adding the meat:", ...this.meatUsed);
+  addMeat() {
+    console.log("Adding the meat:", ...this.meats);
   }
-  addCheese(): void {
-    console.log("Adding the cheese:", ...this.cheeseUsed);
+
+  addCheese() {
+    console.log("Adding the cheese:", ...this.cheese);
   }
-  addVegetables(): void {
-    console.log("Adding the veggies:", ...this.veggiesUsed);
+
+  addVegetables() {
+    console.log("Adding the veggies:", ...this.veggies);
   }
-  addCondiments(): void {
-    console.log("Adding the condiments:", ...this.condimentsUsed);
+
+  addCondiments() {
+    console.log("Adding the condiments:", ...this.condiments);
   }
 }
 
 class VeggieHoagie extends Hoagie {
-  veggiesUsed: Array<String> = [
-    "Lettuce",
-    "Tomatoes",
-    "Onions",
-    "Sweet Peppers"
-  ];
-  condimentsUsed: Array<String> = ["Oil", "Vinegar"];
+  veggies = ["Lettuce", "Tomatoes", "Onions", "Sweet Peppers"];
+  condiments = ["Oil", "Vinegar"];
 
-  customerWantsMeat(): boolean {
+  customerWantsMeat() {
     return false;
   }
 
-  customerWantsCheese(): boolean {
+  customerWantsCheese() {
     return false;
   }
 
-  addMeat(): void { }
-  addCheese(): void { }
-  addVegetables(): void {
-    console.log("Adding the veggies:", ...this.veggiesUsed);
+  addMeat() {}
+  addCheese() {}
+
+  addVegetables() {
+    console.log("Adding the veggies:", ...this.veggies);
   }
-  addCondiments(): void {
-    console.log("Adding the condiments:", ...this.condimentsUsed);
+
+  addCondiments() {
+    console.log("Adding the condiments:", ...this.condiments);
   }
 }
 
 //----------------------------------------------------------------------
 
-const cust12Hoagie: Hoagie = new ItalianHoagie();
-cust12Hoagie.makeSandwich();
+const customer12Hoagie: Hoagie = new ItalianHoagie();
+customer12Hoagie.makeSandwich();
 
-const cust13Hoagie: Hoagie = new VeggieHoagie();
-cust13Hoagie.makeSandwich();
+const customer13Hoagie: Hoagie = new VeggieHoagie();
+customer13Hoagie.makeSandwich();
